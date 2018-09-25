@@ -2,3 +2,4 @@
 
 language: R
 before_install:
+install: true
