@@ -3,3 +3,5 @@
 language: R
 before_install:
 install: true
+script:
+after_success:
