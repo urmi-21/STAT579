@@ -51,8 +51,8 @@ WeekNo integer, week number of the year (1 through 52 or 53)
 Which movie had the highest total gross over the time frame? How many weeks was that movie on rank 1? How long was it in box offices overall?
 
 ```{r}
-cap<-paste(strwrap("Plot showing total gross against WeekNo",width = 95),collapse = "\n")
-ggplot(data = mojo,aes(x=WeekNo,y=`Total Gross`))+ geom_point()+ facet_wrap( ~ Year)
+cap<-paste(strwrap("Plot showing total gross against WeekNo. For each week of the year multiple movies have different total gross values. The highest total gross value is reached in Week 24 of year 2016.",width = 95),collapse = "\n")
+ggplot(data = mojo,aes(x=WeekNo,y=`Total Gross`))+ geom_point()+ facet_wrap( ~ Year) +labs(caption=cap)
 
 #highest total gross
 hg<-mojo$Title[which.max(mojo$`Total Gross`)]
@@ -84,6 +84,7 @@ mojo[which(mojo$Title==m2),]
 
 twoMovies<- rbind(mojo[which(mojo$Title==m1),],mojo[which(mojo$Title==m2),])
 
+cap<-paste(strwrap("Plot showing total gross against WeekNo for the two selected movies. A Quiet Place started earning at 50 million whereas Super Troopers 2 started at 15 million. The trajectory over the weeks show that A Quiet Place earned much more than Super Troopers 2.",width = 95),collapse = "\n")
 ggplot(data = twoMovies,aes(x=WeekNo,y=`Total Gross`))+ geom_point()+ facet_wrap( ~ Title)
 
 ```
