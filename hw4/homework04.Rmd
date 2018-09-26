@@ -1,6 +1,6 @@
 ---
 title: 'Stat 579 - Homework #4'
-author: "Urminder Singh"
+author: "Your Name"
 date: "9/18/2018"
 output: html_document
 ---
@@ -9,48 +9,121 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Flying etiquette
+## Subsets and Visualizations: Movie Mojo
 
-FiveThirtyEight is a website founded by Statistician and writer Nate Silver to publish results from  opinion poll analysis, politics, economics, and sports blogging. 
-One of the featured articles considers [flying etiquette](https://fivethirtyeight.com/features/airplane-etiquette-recline-seat/). 
-This article is based on data collected by FiveThirtyEight and publicly available on github. Use the code below to read in the data from the survey:
-```{r}
-fly <- read.csv("flying-etiquette.csv")
+For this homework we are using the data set `mojo` from the classdata package. `mojo` constains data on box office revenue for movies based on the website https://www.boxofficemojo.com .
+
+
+Run the following two commands to install the newest version of the package from github:
+
+```{r, eval = FALSE}
+library(devtools) # error? then run install.packages("devtools")
+devtools::install_github("heike/classdata")
 ```
 
-The following couple of lines of code provide a bit of cleanup of the demographic information by reaordering the levels of the  corresponding factor variables. Run this code in your session.
-
+Check what is in the data set:
 ```{r}
-fly$Age <- factor(fly$Age, levels=c("18-29", "30-44", "45-60", "> 60", ""))
-fly$Household.Income <- factor(fly$Household.Income, levels = c("$0 - $24,999","$25,000 - $49,999", "$50,000 - $99,999", "$100,000 - $149,999", "150000", ""))
-fly$Education <- factor(fly$Education, levels = c("Less than high school degree", "High school degree", "Some college or Associate degree", "Bachelor degree",  "Graduate degree", ""))
+library(classdata)
+head(mojo)
+library(ggplot2)
 ```
 
 1. Download the RMarkdown file with these homework instructions to use as a template for your work.
 Make sure to replace "Your Name" in the YAML with your name.
 
-2. Some people do not travel often by plane. Provide a (visual) breakdown of travel frequency (use variable `How.often.do.you.travel.by.plane.`). Reorder the levels in the variable by travel frequency from least frequent travel to most frequent. Draw a barchart of travel frequency and comment on it. 
-Exclude all respondents who never fly from the remainder of the analysis. How many records does the data set have now?
+2. What is the difference between the variables `Week` and `WeekNo`? Describe in your words.
 
-3. In the demographic variables (`Education`, `Age`, and `Houshold.Income`), replace all occurrences of the empty string "" by a missing value `NA`. How many responses in each variable do not have any missing values? How many responses have no missing values in any of the three variables? (Hint: think of the function `is.na`)
+```{r}
+str(mojo)
+summary(mojo$Week)
+summary(mojo$WeekNo)
+boxplot(mojo$Week,main="Boxplot of Week", ylab="Week")
+boxplot(mojo$WeekNo,main="Boxplot of WeekNo", ylab="WeekNo")
 
-
-4. Run the command below and interpret the output. What potential purpose can you see for the chart? What might be a problem with the chart? Find at least one purpose and one problem.
-```{r, fig.width=8, fig.height=3, message=FALSE}
-library(ggplot2)
-fly$Education = with(fly, factor(Education, levels = rev(levels(Education))))
-
-ggplot(data = fly, aes(x = 1)) + 
-  geom_bar(aes(fill=Education), position="fill") + 
-  coord_flip() +
-  theme(legend.position="bottom") +
-  scale_fill_brewer() + 
-  xlab("Ratio") 
 ```
 
-5. Rename the variable `In.general..is.itrude.to.bring.a.baby.on.a.plane.` to `baby.on.plane.`. How many levels does the variable `baby.on.plane` have, and what are these levels? Rename the level labeled "" to "Not answered". Bring the levels of `baby.on.plane` in an order from least rude to most rude. Put the level "Not answered" last. Draw a barchart of variable `baby.on.plane`.  Interpret the result. (This question is very similar to question 2, but preps the data for the next question)
+Both Week and WeekNo are of type Num. They differ in values and the range. Week is in range -48 to 873 whereas, WeekNo is in range 1 and 53. It seems like WeekNo is the week in a given year. Further I found, using `?mojo`
 
-6. Investigate the relationship between gender and the variables `Do.you.have.any.children.under.18.` and `baby.on.plane`. How is the attitude towards babies on planes shaped by gender and own children under 18? Find a plot that summarises your findings (use `ggplot2`).
+Week week that the movie has been in theaters
+WeekNo integer, week number of the year (1 through 52 or 53)
+
+3. Use `ggplot2` to plot total gross (`Total Gross`) against week number (`WeekNo`). Facet by Year. Interpret the result. 
+Which movie had the highest total gross over the time frame? How many weeks was that movie on rank 1? How long was it in box offices overall?
+
+```{r}
+cap<-paste(strwrap("Plot showing total gross against WeekNo",width = 95),collapse = "\n")
+ggplot(data = mojo,aes(x=WeekNo,y=`Total Gross`))+ geom_point()+ facet_wrap( ~ Year)
+
+#highest total gross
+hg<-mojo$Title[which.max(mojo$`Total Gross`)]
+#all data about highest total gross
+mojo[which.max(mojo$`Total Gross`),]
+#weeks in theater
+mojo$Week[which.max(mojo$`Total Gross`)]
+
+#find 1 weeks
+length(which(mojo$Title==hg & mojo$TW==1))
+```
+
+Highest total gross was `r mojo$Title[which.max(mojo$'Total Gross')]` it was in box office for `r mojo$Week[which.max(mojo$'Total Gross')]` weeks. This movie was number 1 for `r length(which(mojo$Title==hg & mojo$TW==1))` weeks.
+
+
+4. Pick two movies that were in box office some time between 2013 and 2018 and find the corresponding data in the `mojo` data. How does total gross of the two movies compare? Draw a plot and comment on the result. 
+
+```{r}
+#total movies in mojo
+length(mojo$Title[which(mojo$Year>=2013 & mojo$Year<=2018)])
+# select two movies from mojo
+m1<-"Super Troopers 2"
+m2<-"A Quiet Place"
+
+#data for movie1
+mojo[which(mojo$Title==m1),]
+#data for movie2
+mojo[which(mojo$Title==m2),]
+
+twoMovies<- rbind(mojo[which(mojo$Title==m1),],mojo[which(mojo$Title==m2),])
+
+ggplot(data = twoMovies,aes(x=WeekNo,y=`Total Gross`))+ geom_point()+ facet_wrap( ~ Title)
+
+```
+
+5. Hit or Flop? The variable `Budget (in Millions)` contains estimated budget numbers for some movies. For how many movies is this information available (careful! trick question - look at what the function `unique` does)? Studios would like to see their budget returned by the opening weekend. What is the percentage of movies for which that happened? How many movies did not have their budget matched in total gross by the third weekend?
+For each of these two questions describe your 'plan of attack', i.e. lay out how you go about finding an answer to the question.
+Identify one movie, that did not match its budget by week 3. Plot the incurred loss over time. 
+
+
+```{r}
+#find movies with budget
+moviesBudget<-unique(mojo$Title[!is.na(mojo$`Budget (in Million)`)])
+
+moviesBudgetData<- mojo[mojo$Title %in% moviesBudget,]
+
+#find movies with less earning that budget in opening week
+flopMovies_wk1<-moviesBudgetData$Title[which(moviesBudgetData$Week==1 & moviesBudgetData$`Budget (in Million)`>moviesBudgetData$`Total Gross`/1000000)]
+pct_wk1<-length(unique(flopMovies_wk1))/length(moviesBudget)*100
+
+#
+flopMovies_wk3<-moviesBudgetData$Title[which(moviesBudgetData$Week==3 & moviesBudgetData$`Budget (in Million)`>moviesBudgetData$`Total Gross`/1000000)]
+pct_wk3<-length(unique(flopMovies_wk3))/length(moviesBudget)*100
+
+#movie turbo earning flop
+turboBugdetinMil=unique(moviesBudgetData[moviesBudgetData$Title=="Turbo",]$`Budget (in Million)`)*1000000
+ggplot(data = moviesBudgetData[moviesBudgetData$Title=="Turbo",],aes(x=Week,y=`Total Gross`))+ geom_point() + geom_hline(yintercept=turboBugdetinMil, linetype="dashed", color = "red" , size=1)
+
+#a hit movie example
+spyBugdetinMil=unique(moviesBudgetData[moviesBudgetData$Title=="Spy",]$`Budget (in Million)`)*1000000
+ggplot(data = moviesBudgetData[moviesBudgetData$Title=="Spy",],aes(x=Week,y=`Total Gross`))+ geom_point() + geom_hline(yintercept=spyBugdetinMil, linetype="dashed", color = "red" , size=1)
+
+
+```
+
+To answer the question I first made a subset of data which had all the movies with a budget. There were `r length(moviesBudget)` movies with bugdet. Then I found the movies whose total gross was less than the budget in the first week. I found `r length(unique(flopMovies_wk1))` movies, `r pct_wk1`%, did not earn more than budget in the first week. `r length(moviesBudget)-length(unique(flopMovies_wk1))` were able to earn more than budget in the first week.
+
+Then I found the movies whose total gross was less than the budget in the Third week. I found `r length(unique(flopMovies_wk3))` movies, `r pct_wk3`%, did not earn more than budget in the third week.
+
+The trajectory of earning over weeks from release is shown for a movie "Turbo" which failed to earn the budget. Another movie spy earned more than the budget after 2 weeks.
+
 
 
 Due date: the homework is due a week from now on Thursday. 
