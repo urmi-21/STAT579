@@ -52,7 +52,7 @@ Which movie had the highest total gross over the time frame? How many weeks was 
 
 ```{r}
 cap<-paste(strwrap("Plot showing total gross against WeekNo. For each week of the year multiple movies have different total gross values. The highest total gross value is reached in Week 24 of year 2016.",width = 95),collapse = "\n")
-ggplot(data = mojo,aes(x=WeekNo,y=`Total Gross`))+ geom_point()+ facet_wrap( ~ Year) +labs(caption=cap)
+ggplot(data = mojo,aes(x=WeekNo,y=`Total Gross`))+ geom_point()+ facet_wrap( ~ Year) +labs(caption=cap) +ggtitle("Plot of Total gross against WeekNo for all movies, facet by year.")
 
 #highest total gross
 hg<-mojo$Title[which.max(mojo$`Total Gross`)]
@@ -85,7 +85,7 @@ mojo[which(mojo$Title==m2),]
 twoMovies<- rbind(mojo[which(mojo$Title==m1),],mojo[which(mojo$Title==m2),])
 
 cap<-paste(strwrap("Plot showing total gross against Week for the two selected movies. A Quiet Place started earning at 50 million whereas Super Troopers 2 started at 15 million. The trajectory over the weeks show that A Quiet Place earned much more than Super Troopers 2.",width = 95),collapse = "\n")
-ggplot(data = twoMovies,aes(x=Week,y=`Total Gross`))+ geom_point()+ facet_wrap( ~ Title) +labs(caption=cap)
+ggplot(data = twoMovies,aes(x=Week,y=`Total Gross`))+ geom_point()+ facet_wrap( ~ Title) +labs(caption=cap)+ggtitle("Plot of Total gross at each week for movies  A Quiet Place and Super Troopers 2")
 
 ```
 
@@ -109,15 +109,20 @@ flopMovies_wk3<-moviesBudgetData$Title[which(moviesBudgetData$Week==3 & moviesBu
 pct_wk3<-length(unique(flopMovies_wk3))/length(moviesBudget)*100
 
 #movie turbo earning flop
-cap<-paste(strwrap("Plot showing total gross against Week for the movie Turbo. The red line shows the buged of the movie. We can see over the weeks the movie failed to earn more than the budget.",width = 95),collapse = "\n")
+cap<-paste(strwrap("Plot showing total gross against Week for the movie Turbo. The red line shows the budget of the movie. We can see over the weeks the movie failed to earn more than the budget.",width = 95),collapse = "\n")
 turboBugdetinMil=unique(moviesBudgetData[moviesBudgetData$Title=="Turbo",]$`Budget (in Million)`)*1000000
-ggplot(data = moviesBudgetData[moviesBudgetData$Title=="Turbo",],aes(x=Week,y=`Total Gross`))+ geom_point() + geom_hline(yintercept=turboBugdetinMil, linetype="dashed", color = "red" , size=1)
+ggplot(data = moviesBudgetData[moviesBudgetData$Title=="Turbo",],aes(x=Week,y=`Total Gross`))+ geom_point() + geom_hline(yintercept=turboBugdetinMil, linetype="dashed", color = "red" , size=1)+labs(caption=cap)+ggtitle("Plot of Total gross at each week for movie Turbo") + ylab("Total gross")
+
+cap<-paste(strwrap("Plot showing total loss against Week for the movie Turbo. The red line shows the budget of the movie. Loss is calculated as the budget - gross total at each week. We can see loss never reaches zero or lesser value.",width = 95),collapse = "\n")
+ggplot(data = moviesBudgetData[moviesBudgetData$Title=="Turbo",],aes(x=Week,y=turboBugdetinMil-`Total Gross`))+ geom_point() + geom_hline(yintercept=turboBugdetinMil, linetype="dashed", color = "red" , size=1)+geom_hline(yintercept=0, linetype="dashed", color = "black" , size=1)+labs(caption=cap)+ ggtitle("Plot of loss at each week for movie Turbo") + ylab("Loss")
 
 #a hit movie example
-cap<-paste(strwrap("Plot showing total gross against Week for the movie Spy. The red line shows the buged of the movie. We can see after second week the movie earned more than the budget.",width = 95),collapse = "\n")
+cap<-paste(strwrap("Plot showing total gross against Week for the movie Spy. The red line shows the budget of the movie. We can see after second week the movie earned more than the budget.",width = 95),collapse = "\n")
 spyBugdetinMil=unique(moviesBudgetData[moviesBudgetData$Title=="Spy",]$`Budget (in Million)`)*1000000
-ggplot(data = moviesBudgetData[moviesBudgetData$Title=="Spy",],aes(x=Week,y=`Total Gross`))+ geom_point() + geom_hline(yintercept=spyBugdetinMil, linetype="dashed", color = "red" , size=1)
+ggplot(data = moviesBudgetData[moviesBudgetData$Title=="Spy",],aes(x=Week,y=`Total Gross`))+ geom_point() + geom_hline(yintercept=spyBugdetinMil, linetype="dashed", color = "red" , size=1)+ ggtitle("Plot of Total gross at each week for movie Spy") + ylab("Total gross")
 
+cap<-paste(strwrap("Plot showing total loss against Week for the movie Spy The red line shows the budget of the movie. Loss is calculated as the budget - gross total at each week. We can see loss reaches zero or lesser value after two weeks.",width = 95),collapse = "\n")
+ggplot(data = moviesBudgetData[moviesBudgetData$Title=="Spy",],aes(x=Week,y=spyBugdetinMil-`Total Gross`))+ geom_point(show.legend = T) + geom_hline(yintercept=turboBugdetinMil, linetype="dashed", color = "red" , size=1)+geom_hline(yintercept=0, linetype="dashed", color = "black" , size=1)+labs(caption=cap)+ ggtitle("Plot of loss at each week for movie Spy") + ylab("Loss")
 
 ```
 
