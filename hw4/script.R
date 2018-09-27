@@ -49,9 +49,22 @@ moviesBudget<-unique(mojo$Title[!is.na(mojo$`Budget (in Million)`)])
 moviesBudgetData<- mojo[mojo$Title %in% moviesBudget,]
 
 #find movies with less earning that budget in opening week
-flopMovies<-moviesBudgetData$Title[which(moviesBudgetData$Week==1 & moviesBudgetData$`Budget (in Million)`>moviesBudgetData$`Total Gross`/1000000)]
-pct<-length(unique(flopMovies))/length(moviesBudget)*100
+flopMovies_wk1<-moviesBudgetData$Title[which(moviesBudgetData$Week==1 & moviesBudgetData$`Budget (in Million)`>moviesBudgetData$`Total Gross`/1000000)]
+pct_wk1<-length(unique(flopMovies_wk1))/length(moviesBudget)*100
+
+#
+flopMovies_wk3<-moviesBudgetData$Title[which(moviesBudgetData$Week==3 & moviesBudgetData$`Budget (in Million)`>moviesBudgetData$`Total Gross`/1000000)]
+pct_wk3<-length(unique(flopMovies_wk3))/length(moviesBudget)*100
+
+turboBugdetinMil=unique(moviesBudgetData[moviesBudgetData$Title=="Turbo",]$`Budget (in Million)`)*1000000
+ggplot(data = moviesBudgetData[moviesBudgetData$Title=="Turbo",],aes(x=Week,y=turboBugdetinMil-`Total Gross`))+ geom_point() + geom_hline(yintercept=turboBugdetinMil, linetype="dashed", color = "red" , size=1)
+
+#plot loss over time
 
 
+#a hit movie example
+spyBugdetinMil=unique(moviesBudgetData[moviesBudgetData$Title=="Spy",]$`Budget (in Million)`)*1000000
+ggplot(data = moviesBudgetData[moviesBudgetData$Title=="Spy",],aes(x=Week,y=`Total Gross`))+ geom_point() + geom_hline(yintercept=spyBugdetinMil, linetype="dashed", color = "red" , size=1)
 
-
+ggplot(data = moviesBudgetData[moviesBudgetData$Title=="Turbo",],aes(x=Week,y=turboBugdetinMil-`Total Gross`))+ geom_point(show.legend = T) + geom_hline(yintercept=turboBugdetinMil, linetype="dashed", color = "red" , size=1)
++ theme(legend.position="top")
