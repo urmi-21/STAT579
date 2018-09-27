@@ -1,7 +1,7 @@
 ---
-title: 'Stat 579 - Homework #4'
+title: 'Stat 579 - Homework #5'
 author: "Urminder Singh"
-date: "9/18/2018"
+date: "9/27/2018"
 output: html_document
 ---
 
@@ -33,6 +33,7 @@ Make sure to replace "Your Name" in the YAML with your name.
 Exclude all respondents who never fly from the remainder of the analysis. How many records does the data set have now?
 
 ```{r}
+
 
 ```
 

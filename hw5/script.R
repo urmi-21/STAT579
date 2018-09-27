@@ -1,4 +1,4 @@
-setwd("D:/courses/sem5/stat579/hw/hw4")
+setwd("~/GitHub/STAT579/hw5")
 library(ggplot2)
 
 fly <- read.csv("flying-etiquette.csv")
