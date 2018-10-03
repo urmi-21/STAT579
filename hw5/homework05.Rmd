@@ -52,7 +52,7 @@ dim(fly2)
 
 After reordering the plot we see that most people fly once a year or less. The count decreases with increase in frequence of travel.
 
-After excluding people who never fly we have 874 rows left in the data.
+After excluding people who never fly we have `r dim(fly2)[1]` rows left in the data.
 
 
 
