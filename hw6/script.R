@@ -1,0 +1,4 @@
+setwd("~/GitHub/STAT579/hw6")
+
+iowa <- read.csv("iowa-brfss-2012.csv")
+library(tidyverse)
