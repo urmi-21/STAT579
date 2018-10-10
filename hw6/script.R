@@ -35,3 +35,9 @@ head(iowa$X_SMOKER3)
 levels(iowa$X_SMOKER3)<-c("Current Smoker", "Current Smoker", "Former Smoker" ,"Never Smoked", "NA")
 head(iowa$X_SMOKER3)
 
+ggplot(data=iowa, aes(x=X_SMOKER3)) + geom_bar()+facet_wrap(~X_AGE_G) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplot(data=iowa, aes(x=AGE)) + geom_bar()+facet_wrap(~X_SMOKER3) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+#5
+
+
