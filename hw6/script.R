@@ -36,7 +36,7 @@ levels(iowa$X_SMOKER3)<-c("Current Smoker", "Current Smoker", "Former Smoker" ,"
 head(iowa$X_SMOKER3)
 
 ggplot(data=iowa, aes(x=X_SMOKER3)) + geom_bar()+facet_wrap(~X_AGE_G) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
-ggplot(data=iowa, aes(x=AGE)) + geom_bar()+facet_wrap(~X_SMOKER3) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplot(data=iowa, aes(x=AGE)) + geom_density()+facet_wrap(~X_SMOKER3) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 #5
 iowa_notNA<-iowa[which(!(iowa$X_SMOKER3=="NA")),]
@@ -50,9 +50,14 @@ table(iowaNS$X_AGE_G)/tot*100
 
 table(iowaNS$SEX)/tot*100
 
+table(iowaNS$X_AGE_G)/totNS*100
+table(iowaNS$SEX)/totNS*100
+
 #6
 iowa<-iowa %>% mutate(POORHLTHNEW = ifelse(POORHLTH == 88, 0, ifelse(POORHLTH == 77 | POORHLTH == 99, NA, POORHLTH)))
 head(iowa[,c('POORHLTHNEW','POORHLTH')],100)
-ggplot(data=iowa, aes(x=POORHLTHNEW)) + geom_bar()+facet_wrap(~X_AGE_G) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplot(data=iowa, aes(x=POORHLTHNEW,fill=SEX)) + geom_bar()+facet_wrap(~X_AGE_G, scales = "free_x") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+ggplot(data=iowa, aes(x=POORHLTHNEW, fill=as.factor(SEX))) + geom_bar()+facet_wrap(~X_AGE_G, scales = "free_x")
 
 

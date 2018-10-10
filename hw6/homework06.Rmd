@@ -16,7 +16,7 @@ We are, again, using the data from the Behavioral Risk Factor Surveillance Syste
 A subset of the data concentrating on Iowa with records for 2012 is given at [http://www.hofroe.net/data/iowa-brfss-2012.csv]()
 
 The following code reads the data into your R session:
-```{r, cache = TRUE, warning = FALSE}
+```{r, warning = FALSE}
 library(tidyverse)
 library("ggplot2", lib.loc="~/R/win-library/3.4")
 ```
@@ -70,6 +70,15 @@ t.test(males,females)
 
 ```
 
+average number of times respondents admitted to driving under the influence in the past 30 days: `r mean(iowa[which(!is.na(iowa$drinkdrive)),c('drinkdrive')])`
+On how many reports is this average based (exclude missing values): `r length(iowa[which(!is.na(iowa$drinkdrive)),c('drinkdrive')])`
+avg for male: `r mean(males)`
+avg for female: `r mean(females)`
+
+T-test gives very low p value thus we can say there is a difference between the male and female average.
+
+
+
 4. Current smoking status is imputed in the variable `X_SMOKER3` (corresponds to variable `_SMOKER3` in the codebook). Make `X_SMOKER3` a factor.  Relabel levels 1, 2, 3, 4 to `Current Smoker`, `Current Smoker`, `Former Smoker` and `Never Smoked` (yes, `Current Smoker` is repeated on purpose) and level 9 to NA.
 Describe the relationship between smoking status and age (use `X_AGE_G` - read up on `_AGE_G` in the codebook) based on an appropriate visualization. 
 
@@ -81,8 +90,15 @@ head(iowa$X_SMOKER3)
 
 ggplot(data=iowa, aes(x=X_SMOKER3)) + geom_bar()+facet_wrap(~X_AGE_G) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ggplot(data=iowa, aes(x=AGE)) + geom_bar()+facet_wrap(~X_SMOKER3) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplot(data=iowa, aes(x=AGE)) + geom_density()+facet_wrap(~X_SMOKER3) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ```
+
+From the plot we can see that in each age category, te count for "Never smoked is highest". In age category 1-3 current smokers are more than former smokers but in age category 4-6 former smokers are more than current smokers. This means that many older people quit smoking.
+
+In the plot of AGE vs Smokers we see few values where AGE is less than 10, these may be outliers. After checking the description 7 and 9 were used for missing values.
+
+Other thing to notice is that mean of Former smoker apprers larger than that of Never smoked and current smoker.
 
 5. What percentage of the population has never smoked? Calculate this percentage by age groups (`X_AGE_G`) and gender (`SEX`). Report also on the number of respondents these percentages are based on.
 
@@ -100,18 +116,34 @@ table(iowaNS$X_AGE_G)/tot*100
 table(iowaNS$SEX)/tot*100
 ```
 
+The non-smoker percentage is based on `r tot` number of respondents
+
+Total % never smoked `r totNS/tot*100`
+
+% non smokers by age `r table(iowaNS$X_AGE_G)/tot*100`
+
+% non smokers by sex `r table(iowaNS$SEX)/tot*100`
+
+% non smokers in each age group `r table(iowaNS$X_AGE_G)/totNS*100`
+
+% non smokers in each Sex `r table(iowaNS$X_AGE_G)/totNS*100`
+
+
+
+
+
 6. Self assessed health status is used as an indicator in a lot of health andn insurance models. Read up on variable `POORHLTH` in the codebook and recode levels to 'meaningful' numbers (similar to question 3). 
 
 What is the relationship between age and the number of  poor health days? Is this relationship different for men and women? Show plot(s) and describe.
 
 ```{r}
 iowa<-iowa %>% mutate(POORHLTHNEW = ifelse(POORHLTH == 88, 0, ifelse(POORHLTH == 77 | POORHLTH == 99, NA, POORHLTH)))
-head(iowa[,c('POORHLTHNEW','POORHLTH')],100)
 ggplot(data=iowa, aes(x=POORHLTHNEW)) + geom_bar()+facet_wrap(~X_AGE_G) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
+ggplot(data=iowa, aes(x=POORHLTHNEW, fill=as.factor(SEX))) + geom_density(alpha=0.5)+facet_wrap(~X_AGE_G)
 
 ```
 
-Due date: the homework is due a week from now on Thursday. 
+In the first plot we can see the distribution of AGE by number of days of Poorhealth faceted by sex (1 for male 2 for female). We can see that in females the number of respondents with 0 POORHLTH are higher than those in male. In both Male and Female, the Age 6 has highest frequency where POORHLTH is 30.
 
-For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 
+In the second plot we can see the distribution of number of respondents faceted by AGE groups and coloured by SEX. For each Age group we dont see much difference in the distribution over POORHLTH.
+
