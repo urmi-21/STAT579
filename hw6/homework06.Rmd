@@ -48,6 +48,7 @@ Describe the relationship between smoking status and age (use `X_AGE_G` - read u
 5. What percentage of the population has never smoked? Calculate this percentage by age groups (`X_AGE_G`) and gender (`SEX`). Report also on the number of respondents these percentages are based on.
 
 6. Self assessed health status is used as an indicator in a lot of health andn insurance models. Read up on variable `POORHLTH` in the codebook and recode levels to 'meaningful' numbers (similar to question 3). 
+
 What is the relationship between age and the number of  poor health days? Is this relationship different for men and women? Show plot(s) and describe.
 
 Due date: the homework is due a week from now on Thursday. 

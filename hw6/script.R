@@ -50,3 +50,6 @@ table(iowaNS$X_AGE_G)/tot*100
 
 table(iowaNS$SEX)/tot*100
 
+#6
+
+
