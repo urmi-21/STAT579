@@ -18,6 +18,7 @@ A subset of the data concentrating on Iowa with records for 2012 is given at [ht
 The following code reads the data into your R session:
 ```{r, cache = TRUE, warning = FALSE}
 library(tidyverse)
+library("ggplot2", lib.loc="~/R/win-library/3.4")
 ```
 
 A codebook describing the survey and a listing of all variables is available at [http://www.cdc.gov/brfss/annual_data/2012/pdf/CODEBOOK12_LLCP.pdf]().
