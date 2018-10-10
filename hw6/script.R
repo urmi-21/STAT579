@@ -51,5 +51,8 @@ table(iowaNS$X_AGE_G)/tot*100
 table(iowaNS$SEX)/tot*100
 
 #6
+iowa<-iowa %>% mutate(POORHLTHNEW = ifelse(POORHLTH == 88, 0, ifelse(POORHLTH == 77 | POORHLTH == 99, NA, POORHLTH)))
+head(iowa[,c('POORHLTHNEW','POORHLTH')],100)
+ggplot(data=iowa, aes(x=POORHLTHNEW)) + geom_bar()+facet_wrap(~X_AGE_G) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 

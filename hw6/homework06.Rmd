@@ -41,15 +41,75 @@ Find the following summaries:
     a. What is the average number of times respondents admitted to driving under the influence in the past 30 days?
     b. On how many reports is this average based (exclude missing values)?
     c. Is there a difference in this average between the genders? Is that difference significant? 
+    
+
+```{r}
+ggplot(data=iowa,aes(x=as.factor(DRNKDRI2))) + geom_bar() + scale_y_log10()
+
+sort(table(iowa$DRNKDRI2,useNA = "ifany"))
+
+#iowa<-iowa %>% mutate(drinkdrive = (DRNKDRI2 == 88 )*0)
+iowa<-iowa %>% mutate(drinkdrive = ifelse(DRNKDRI2 == 88, 0, ifelse(DRNKDRI2 == 77 | DRNKDRI2 == 99, NA, DRNKDRI2)))
+
+
+iowa[which(iowa$DRNKDRI2==99),c('drinkdrive','DRNKDRI2')]
+
+summary(iowa[which(!is.na(iowa$drinkdrive)),c('drinkdrive')])
+length(iowa[which(!is.na(iowa$drinkdrive)),c('drinkdrive')])
+#for male
+males<-iowa[which(!is.na(iowa$drinkdrive) & iowa$SEX==1),c('drinkdrive')]
+summary(males)
+length(males)
+#female
+females<-iowa[which(!is.na(iowa$drinkdrive) & iowa$SEX==2),c('drinkdrive')]
+summary(females)
+length(females)
+
+t.test(males,females) 
+
+```
 
 4. Current smoking status is imputed in the variable `X_SMOKER3` (corresponds to variable `_SMOKER3` in the codebook). Make `X_SMOKER3` a factor.  Relabel levels 1, 2, 3, 4 to `Current Smoker`, `Current Smoker`, `Former Smoker` and `Never Smoked` (yes, `Current Smoker` is repeated on purpose) and level 9 to NA.
 Describe the relationship between smoking status and age (use `X_AGE_G` - read up on `_AGE_G` in the codebook) based on an appropriate visualization. 
 
+```{r}
+iowa$X_SMOKER3 <- as.factor(iowa$X_SMOKER3)
+head(iowa$X_SMOKER3)
+levels(iowa$X_SMOKER3)<-c("Current Smoker", "Current Smoker", "Former Smoker" ,"Never Smoked", "NA")
+head(iowa$X_SMOKER3)
+
+ggplot(data=iowa, aes(x=X_SMOKER3)) + geom_bar()+facet_wrap(~X_AGE_G) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplot(data=iowa, aes(x=AGE)) + geom_bar()+facet_wrap(~X_SMOKER3) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
 5. What percentage of the population has never smoked? Calculate this percentage by age groups (`X_AGE_G`) and gender (`SEX`). Report also on the number of respondents these percentages are based on.
+
+```{r}
+#5
+iowa_notNA<-iowa[which(!(iowa$X_SMOKER3=="NA")),]
+tot<-dim(iowa_notNA)[1]
+iowaNS<-iowa_notNA[which((iowa_notNA$X_SMOKER3=="Never Smoked")),]
+#percent nonsmoker
+totNS<-dim(iowaNS)[1]
+totNS/tot*100
+
+table(iowaNS$X_AGE_G)/tot*100
+
+table(iowaNS$SEX)/tot*100
+```
 
 6. Self assessed health status is used as an indicator in a lot of health andn insurance models. Read up on variable `POORHLTH` in the codebook and recode levels to 'meaningful' numbers (similar to question 3). 
 
 What is the relationship between age and the number of  poor health days? Is this relationship different for men and women? Show plot(s) and describe.
+
+```{r}
+iowa<-iowa %>% mutate(POORHLTHNEW = ifelse(POORHLTH == 88, 0, ifelse(POORHLTH == 77 | POORHLTH == 99, NA, POORHLTH)))
+head(iowa[,c('POORHLTHNEW','POORHLTH')],100)
+ggplot(data=iowa, aes(x=POORHLTHNEW)) + geom_bar()+facet_wrap(~X_AGE_G) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+```
 
 Due date: the homework is due a week from now on Thursday. 
 
