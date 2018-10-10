@@ -39,5 +39,14 @@ ggplot(data=iowa, aes(x=X_SMOKER3)) + geom_bar()+facet_wrap(~X_AGE_G) + theme(ax
 ggplot(data=iowa, aes(x=AGE)) + geom_bar()+facet_wrap(~X_SMOKER3) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 #5
+iowa_notNA<-iowa[which(!(iowa$X_SMOKER3=="NA")),]
+tot<-dim(iowa_notNA)[1]
+iowaNS<-iowa_notNA[which((iowa_notNA$X_SMOKER3=="Never Smoked")),]
+#percent nonsmoker
+totNS<-dim(iowaNS)[1]
+totNS/tot*100
 
+table(iowaNS$X_AGE_G)/tot*100
+
+table(iowaNS$SEX)/tot*100
 
