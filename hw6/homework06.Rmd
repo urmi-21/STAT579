@@ -70,12 +70,12 @@ t.test(males,females)
 
 ```
 
-average number of times respondents admitted to driving under the influence in the past 30 days: `r mean(iowa[which(!is.na(iowa$drinkdrive)),c('drinkdrive')])`
-On how many reports is this average based (exclude missing values): `r length(iowa[which(!is.na(iowa$drinkdrive)),c('drinkdrive')])`
-avg for male: `r mean(males)`
-avg for female: `r mean(females)`
+* average number of times respondents admitted to driving under the influence in the past 30 days: `r mean(iowa[which(!is.na(iowa$drinkdrive)),c('drinkdrive')])`
+* On how many reports is this average based (exclude missing values): `r length(iowa[which(!is.na(iowa$drinkdrive)),c('drinkdrive')])`
+* avg for male: `r mean(males)`
+* avg for female: `r mean(females)`
 
-T-test gives very low p value thus we can say there is a difference between the male and female average.
+* T-test gives very low p value thus we can say there is a difference between the male and female average.
 
 
 
@@ -120,13 +120,13 @@ The non-smoker percentage is based on `r tot` number of respondents
 
 Total % never smoked `r totNS/tot*100`
 
-% non smokers by age `r table(iowaNS$X_AGE_G)/tot*100`
+* % non smokers by age `r table(iowaNS$X_AGE_G)/tot*100`
 
-% non smokers by sex `r table(iowaNS$SEX)/tot*100`
+* % non smokers by sex `r table(iowaNS$SEX)/tot*100`
 
-% non smokers in each age group `r table(iowaNS$X_AGE_G)/totNS*100`
+* % non smokers in each age group `r table(iowaNS$X_AGE_G)/totNS*100`
 
-% non smokers in each Sex `r table(iowaNS$X_AGE_G)/totNS*100`
+* % non smokers in each Sex `r table(iowaNS$X_AGE_G)/totNS*100`
 
 
 
@@ -139,7 +139,7 @@ What is the relationship between age and the number of  poor health days? Is thi
 ```{r}
 iowa<-iowa %>% mutate(POORHLTHNEW = ifelse(POORHLTH == 88, 0, ifelse(POORHLTH == 77 | POORHLTH == 99, NA, POORHLTH)))
 ggplot(data=iowa, aes(x=POORHLTHNEW)) + geom_bar()+facet_wrap(~X_AGE_G) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
-ggplot(data=iowa, aes(x=POORHLTHNEW, fill=as.factor(SEX))) + geom_density(alpha=0.5)+facet_wrap(~X_AGE_G)
+ggplot(data=iowa, aes(x=POORHLTHNEW, fill=as.factor(SEX))) + geom_density(alpha=0.8)+facet_wrap(~X_AGE_G)
 
 ```
 
