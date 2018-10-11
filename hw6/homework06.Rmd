@@ -53,8 +53,6 @@ sort(table(iowa$DRNKDRI2,useNA = "ifany"))
 iowa<-iowa %>% mutate(drinkdrive = ifelse(DRNKDRI2 == 88, 0, ifelse(DRNKDRI2 == 77 | DRNKDRI2 == 99, NA, DRNKDRI2)))
 
 
-iowa[which(iowa$DRNKDRI2==99),c('drinkdrive','DRNKDRI2')]
-
 summary(iowa[which(!is.na(iowa$drinkdrive)),c('drinkdrive')])
 length(iowa[which(!is.na(iowa$drinkdrive)),c('drinkdrive')])
 #for male
@@ -138,7 +136,7 @@ What is the relationship between age and the number of  poor health days? Is thi
 
 ```{r}
 iowa<-iowa %>% mutate(POORHLTHNEW = ifelse(POORHLTH == 88, 0, ifelse(POORHLTH == 77 | POORHLTH == 99, NA, POORHLTH)))
-ggplot(data=iowa, aes(x=POORHLTHNEW)) + geom_bar()+facet_wrap(~X_AGE_G) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplot(data=iowa, aes(x=POORHLTHNEW,fill=as.factor(X_AGE_G))) + geom_bar()+facet_wrap(~SEX, scales = "free_x") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ggplot(data=iowa, aes(x=POORHLTHNEW, fill=as.factor(SEX))) + geom_density(alpha=0.8)+facet_wrap(~X_AGE_G)
 
 ```
