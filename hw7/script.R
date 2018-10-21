@@ -1,4 +1,4 @@
-
+setwd("~/GitHub/STAT579/hw7")
 library(dplyr)
 library(ggplot2)
 library(readr)
@@ -13,3 +13,12 @@ names(starwars) <- enc2native(stringi::stri_trans_general(varnames, "latin-ascii
 
 starwars <- starwars[-1,]
 head(starwars)
+
+
+#hw secB
+ChickWeight
+
+#2
+ChickWeight %>%  count(Chick) %>% filter(n <12)
+#or without dplyr
+table(ChickWeight$Chick)
