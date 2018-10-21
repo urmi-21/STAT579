@@ -23,22 +23,46 @@ Make sure to replace "Your Name" in the YAML with your name.
 library(dplyr)
 library(ggplot2)
 ChickWeight %>%  count(Chick) %>% filter(n <12)
+
+complete<-ChickWeight %>% group_by(Chick) %>% mutate(count = n())  %>% filter(count==12)
 ```
 
 3. In the `complete` data set introduce a new variable that measures the current weight difference compared to day 0. Name this variable `weightgain`.   
 
+```{r}
+complete<-complete  %>%  group_by(Chick) %>% mutate(weightgain = weight-first(weight))
+
+```
+
 4.  Using the `ggplot2` package create  side-by-side boxplots of `weightgain` by `Diet` for day 21. Describe the relationship in 2-3 sentences. 
 Change the order of the categories in the `Diet` variable such that the boxplots are ordered by median `weightgain`.
 
+```{r}
+ggplot(data=complete %>% filter(Time==21),aes(x=Diet)) + geom_boxplot(aes(y=weightgain,fill=Diet))
+#sort increasing
+ggplot(data=complete %>% filter(Time==21),aes(x=reorder(Diet,weightgain,FUN = median))) + geom_boxplot(aes(y=weightgain,fill=reorder(Diet,weightgain,FUN = median)))+
+  xlab("Diet") + scale_fill_discrete(guide = guide_legend(title = "Diet"))
+
+```
+
+
 5. Draw a plot of weight by time. Facet by `Diet`. Use a point layer and also draw one line for each `Chick` (use `geom_line` and specify `group = Chick`). Color by `Diet`.  <br>
 Comment on the plot in  2-3 sentences. 
+
+```{r}
+ggplot(data=complete ,aes(x=Time,y=weight))+ geom_point(aes(colour=Diet)) + facet_wrap(~Diet)+ geom_line(aes(x=Time,y=weight, group = Chick, colour=Diet))
+
+```
+
 
 6. Comment on the two resulting plots below. Which plot best describes the effect of the diets on the chicks?
   a. Select the  `Chick` with the maximum weight at `Time` 21 for each of the diets. Redraw the previous plot with only these 4 chicks (and don't facet).
   b. Compute average daily weights under each Diet and redraw the plot (using the same structure and aesthetics as before).<br>
   
+```{r}
+ggplot(data=complete%>%group_by(Diet)%>%filter(Time==21)%>%filter(weight==max(weight)) ,aes(x=Time,y=weight))+ geom_point(aes(colour=Diet)) 
+ggplot(data=complete %>% group_by(Time,Diet) %>% mutate(avgWt=ave(weight)) ,aes(x=Time,y=avgWt))+ geom_point(aes(colour=Diet)) + facet_wrap(~Diet)+ geom_line(aes(x=Time,y=avgWt, colour=Diet))
 
 
-Due date: please refer to the website and Canvas for the due date. 
+```
 
-For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 
