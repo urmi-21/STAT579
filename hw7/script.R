@@ -46,8 +46,6 @@ ggplot(data=complete ,aes(x=Time,y=weight))+ geom_point(aes(colour=Diet)) + face
 
 ggplot(data=complete%>%group_by(Diet)%>%filter(Time==21)%>%filter(weight==max(weight)) ,aes(x=Time,y=weight))+ geom_point(aes(colour=Diet)) 
 
-complete %>% group_by(Time,Diet) %>% mutate(a=ave(weight))
-
 ggplot(data=complete %>% group_by(Time,Diet) %>% mutate(avgWt=ave(weight)) ,aes(x=Time,y=avgWt))+ geom_point(aes(colour=Diet)) + facet_wrap(~Diet)+ geom_line(aes(x=Time,y=avgWt, colour=Diet))
 
 
