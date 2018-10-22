@@ -68,10 +68,10 @@ ggplot(data=complete%>%group_by(Diet)%>%filter(Time==21)%>%filter(weight==max(we
 
 ```
 
-The above plot shows the weight of 4 chicks which were heaviest in each diet group. This plot only shows the maximum of the weight variable for each diet group. This plot isn't the best to copare overall effect of diets on weight of chicks as it only compares the extreme values.
+The above plot shows the weight of 4 chicks which were heaviest in each diet group on day 21. This plot only shows the maximum of the weight variable for each diet group. This plot isn't the best to copare overall effect of diets on weight of chicks as it only compares the extreme values and is only plotted for the last day. It doesn't show any variation over time.
 
 ```{r}
 ggplot(data=complete %>% group_by(Time,Diet) %>% mutate(avgWt=ave(weight)) ,aes(x=Time,y=avgWt))+ geom_point(aes(colour=Diet)) + facet_wrap(~Diet)+ geom_line(aes(x=Time,y=avgWt, colour=Diet))
 ```
 
-The second plot 
+The second plot average weight in each diet group over time. The mean is computed for all the chicks in a diet group. This plot is better to compare the effect of diets on the weights. We can actually see how the mean weight changes over time for each diet group.
