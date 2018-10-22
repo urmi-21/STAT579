@@ -26,6 +26,8 @@ ChickWeight %>%  count(Chick) %>% filter(n <12)
 
 complete<-ChickWeight %>% group_by(Chick) %>% mutate(count = n())  %>% filter(count==12)
 ```
+5 chicks had incomplete measurements. These were 8, 15, 16, 18 and 44
+
 
 3. In the `complete` data set introduce a new variable that measures the current weight difference compared to day 0. Name this variable `weightgain`.   
 
@@ -45,6 +47,7 @@ ggplot(data=complete %>% filter(Time==21),aes(x=reorder(Diet,weightgain,FUN = me
 
 ```
 
+From the figure we see that for each diet, the distribution of weight gain on 21st day is different.
 
 5. Draw a plot of weight by time. Facet by `Diet`. Use a point layer and also draw one line for each `Chick` (use `geom_line` and specify `group = Chick`). Color by `Diet`.  <br>
 Comment on the plot in  2-3 sentences. 
