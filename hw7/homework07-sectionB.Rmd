@@ -57,6 +57,7 @@ ggplot(data=complete ,aes(x=Time,y=weight))+ geom_point(aes(colour=Diet)) + face
 
 ```
 
+In the plot wee see the weight of each chick over time separately plotted by diet. For each diet type we can see how weight for the chicks changes overtime. The slope of each line is propotional to the weight gain for a given chick. From the plot we can observe that the weight over time follows linear growth.
 
 6. Comment on the two resulting plots below. Which plot best describes the effect of the diets on the chicks?
   a. Select the  `Chick` with the maximum weight at `Time` 21 for each of the diets. Redraw the previous plot with only these 4 chicks (and don't facet).
@@ -64,8 +65,13 @@ ggplot(data=complete ,aes(x=Time,y=weight))+ geom_point(aes(colour=Diet)) + face
   
 ```{r}
 ggplot(data=complete%>%group_by(Diet)%>%filter(Time==21)%>%filter(weight==max(weight)) ,aes(x=Time,y=weight))+ geom_point(aes(colour=Diet)) 
-ggplot(data=complete %>% group_by(Time,Diet) %>% mutate(avgWt=ave(weight)) ,aes(x=Time,y=avgWt))+ geom_point(aes(colour=Diet)) + facet_wrap(~Diet)+ geom_line(aes(x=Time,y=avgWt, colour=Diet))
-
 
 ```
 
+The above plot shows the weight of 4 chicks which were heaviest in each diet group. This plot only shows the maximum of the weight variable for each diet group. This plot isn't the best to copare overall effect of diets on weight of chicks as it only compares the extreme values.
+
+```{r}
+ggplot(data=complete %>% group_by(Time,Diet) %>% mutate(avgWt=ave(weight)) ,aes(x=Time,y=avgWt))+ geom_point(aes(colour=Diet)) + facet_wrap(~Diet)+ geom_line(aes(x=Time,y=avgWt, colour=Diet))
+```
+
+The second plot 
