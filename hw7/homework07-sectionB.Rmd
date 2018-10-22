@@ -1,7 +1,7 @@
 ---
 title: 'Stat 579 - Homework #7'
-author: "Your Name"
-date: "10/18/2018"
+author: "Urminder Singh"
+date: "10/21/2018"
 output: html_document
 ---
 
@@ -74,4 +74,4 @@ The above plot shows the weight of 4 chicks which were heaviest in each diet gro
 ggplot(data=complete %>% group_by(Time,Diet) %>% mutate(avgWt=ave(weight)) ,aes(x=Time,y=avgWt))+ geom_point(aes(colour=Diet)) + facet_wrap(~Diet)+ geom_line(aes(x=Time,y=avgWt, colour=Diet))
 ```
 
-The second plot average weight in each diet group over time. The mean is computed for all the chicks in a diet group. This plot is better to compare the effect of diets on the weights. We can actually see how the mean weight changes over time for each diet group.
+The second plot shows average weight in each diet group over time. The mean is computed for all the chicks in a diet group. This plot is better to compare the effect of diets on the weights. We can see how the mean weight changes over time for each diet group.
