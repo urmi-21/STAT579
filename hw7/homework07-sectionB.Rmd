@@ -47,7 +47,7 @@ ggplot(data=complete %>% filter(Time==21),aes(x=reorder(Diet,weightgain,FUN = me
 
 ```
 
-From the figure we see that for each diet, the distribution of weight gain on 21st day is different.
+From the figure we see that for each diet, the median and spread of weight gain on 21st day is different. Diet 3 has highest median weightgain and diet 1 has lowest median. Diet 2 has highest spread and diet 4 has lowest spread.
 
 5. Draw a plot of weight by time. Facet by `Diet`. Use a point layer and also draw one line for each `Chick` (use `geom_line` and specify `group = Chick`). Color by `Diet`.  <br>
 Comment on the plot in  2-3 sentences. 
