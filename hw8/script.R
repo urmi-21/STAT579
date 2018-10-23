@@ -51,3 +51,26 @@ popularity<-popularity %>% filter(!is.na(pop))%>% filter(!(pop == "Unfamiliar (N
 # very unfavorably Somewhat unfavorably neutral Somewhat favorably Very favorably
 unique(popularity$pop)
 
+popularity <- popularity %>% mutate(popInt = case_when(pop=='Very unfavorably' ~-2, pop=='very unfavorably' ~-2, pop=='Somewhat unfavorably' ~-1, pop=='Neither favorably nor unfavorably (neutral)' ~0, pop=='Somewhat favorably' ~1, pop=='Very favorably' ~2))
+
+popularity %>% group_by(Character) %>% summarise_at(vars(popInt),mean) %>% arrange(desc(popInt))
+
+#7
+popularity<-starwars_yes[,16:29] %>% gather(Character,pop,colnames(starwars_yes)[16:29])
+#remove NA Unfamiliar (N/A)
+popularity<-popularity %>% filter(!is.na(pop))%>% filter(!(pop == "Unfamiliar (N/A)"))
+#map popularity to scale -2 -1 0 1 2
+# very unfavorably Somewhat unfavorably neutral Somewhat favorably Very favorably
+unique(popularity$pop)
+
+popularity <- popularity %>% mutate(popInt = case_when(pop=='Very unfavorably' ~-2, pop=='very unfavorably' ~-2, pop=='Somewhat unfavorably' ~-1, pop=='Neither favorably nor unfavorably (neutral)' ~0, pop=='Somewhat favorably' ~1, pop=='Very favorably' ~2))
+
+meanpopularityAllchars <- popularity %>% group_by(Character) %>% summarise_at(vars(popInt),mean) %>% arrange(desc(popInt))
+#rename
+meanpopularityAllchars[1,1]<- "Han Solo"
+
+
+ggplot(data=meanpopularityAllchars,aes(x=`Character`,y=popInt,fill=(Character))) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+
