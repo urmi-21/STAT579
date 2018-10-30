@@ -33,6 +33,17 @@ gss <- readRDS("gss.rds")
 ```{r}
 # Your code goes here
 
+#num rows
+dim(gss)[1]
+#num inter by years
+gss %>% count(YEAR)
+#num vars
+dim(gss)[2]
+#most interviews
+gss %>% count(YEAR) %>% filter(n==max(n))
+#plot by year
+ggplot(data=gss %>% count(YEAR), aes(x=YEAR,y=n))+geom_bar(stat="identity",aes(fill=YEAR))
+
 
 ```
 
@@ -44,6 +55,18 @@ gss <- readRDS("gss.rds")
 ```{r}
 # Your code goes here
 
+levels(gss$AGE)[which(levels(gss$AGE)=='89 OR OLDER')]=89
+levels(gss$AGE)[which(levels(gss$AGE)=='DK')]=NA
+
+gss1<-gss %>% mutate(AGE_num=levels(gss$AGE)[as.numeric(AGE)])
+#replace to NA
+gss1 <-  gss1 %>% mutate(AGE_num = replace(AGE_num, AGE_num=="NA", NA))
+#num missing
+sum(is.na(gss1$AGE_num))
+
+ggplot(data=gss1,aes(x=AGE_num))+geom_histogram(stat="count")+facet_wrap(~SEX,ncol = 1)+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
 ```
 
 3. (20 points) The variable `DEGREE` shows the respondent's highest educational degree.
@@ -52,6 +75,19 @@ Draw an appropriate chart to show the relationship between `AGE` and `DEGREE`. C
 
 ```{r}
 # Your code goes here
+
+#freq of degree
+gss1 %>% count(DEGREE)
+#remove DK, IAP
+levels(gss1$DEGREE)[which(levels(gss1$DEGREE)=='DK')]=NA
+levels(gss1$DEGREE)[which(levels(gss1$DEGREE)=='IAP')]=NA
+
+levels(gss1$DEGREE)<-c('LT HIGH SCHOOL', 'HIGH SCHOOL', 'JUNIOR COLLEGE', 'BACHELOR', 'GRADUATE', "NA")
+gss1 <-  gss1 %>% mutate(DEGREE = replace(DEGREE, DEGREE=="NA", NA))
+
+ggplot(data=gss1%>%filter(!is.na(DEGREE)),aes(x=AGE_num))+geom_histogram(stat="count")+facet_wrap(~DEGREE,ncol = 1)+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
 ```
 
 4. The variable `AGEKDBRN` is the respondents' age at the time their first kid was born. 
@@ -59,7 +95,15 @@ Draw an appropriate chart to show the relationship between `AGE` and `DEGREE`. C
     a. (12 points) Calculate the average and standard deviation of `AGEKDBRN` for men and women. Comment on it. 
     b. (22 points) Calculate the average of `AGEKDBRN` over time (`YEAR`), genders (`SEX`) and education (`DEGREE`). Make sure to keep track of how many values each average is based on. Plot the relationship for averages that are based on at least 30 records. Summarise the results in at least three sentences.
 
+
 ```{r}
 # Your code goes here
+
+gss1 %>% group_by(SEX) %>% filter(!is.na(AGEKDBRN)) %>% summarize(avg=mean(AGEKDBRN),sd=sd(AGEKDBRN),obs=n())
+
+avgs <- gss1 %>% group_by(YEAR,SEX,DEGREE) %>% filter(!is.na(AGEKDBRN)) %>% summarize(avg=mean(AGEKDBRN),sd=sd(AGEKDBRN),obs=n()) %>% filter(obs>=30)
+
+ggplot(data=avgs, aes(x=avg))+geom_histogram() + facet_wrap(SEX~DEGREE)
+
 ```
 
