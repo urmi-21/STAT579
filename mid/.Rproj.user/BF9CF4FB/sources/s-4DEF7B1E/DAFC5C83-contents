@@ -1,0 +1,62 @@
+---
+title: "Midterm - Stat 579 - Fall 2018 - Section B"
+author: "Your Name"
+date: "10/30/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is the midterm exam for Stat 579 section B. You have 75 mins to work on and answer the following questions. Please incorporate your answers into the R markdown file. Note that it is not essential that the file knits for full credit on the exam.
+
+
+Since 1972 the General Social Survey (GSS) is conducted every two years by the National Opinion Research Center (NORC).
+The survey allows insight into developing trends across dozens of different topics. 
+
+From the GSS website:
+
+> The GSS contains a standard core of demographic, behavioral, and attitudinal questions, plus topics of special interest. Among the topics covered are civil liberties, crime and violence, intergroup tolerance, morality, national spending priorities, psychological well-being, social mobility, and stress and traumatic events.
+
+Here we are focusing on some of these aspects. A file with the data is part of the folder you downloaded. You can get ready for answering the questions below by running the following lines of code:
+
+```{r, warning = FALSE, message = FALSE}
+library(tidyverse)
+gss <- readRDS("gss.rds")
+```
+
+0. Include your name in the YAML at the top of this file. Include your responses to the questions (code and comments) in this file and submit in Canvas. 
+
+1. (22 points) Each row of the `gss` data set corresponds to an interview. How many interviews were conducted each year? How many variables are included in this subset? In which year were the most interviews conducted (and how many)? Draw a plot of the number of interviews by year. Describe the relationship in two to three sentences.
+
+```{r}
+# Your code goes here
+```
+
+2. The variable `AGE` captures respondents' age at the time of the interview. The variable is a factor. The levels generally represent the age, but levels `"89 OR OLDER"`, `"DK"`, `"IAP"`, and `"NA"` need to be re-coded before we can use age as a numeric variable. 
+
+    a. (12 points) Change `"89 OR OLDER"` to 89, and the other three levels  to `NA`. Then convert the variable to a numeric variable. How many records in `AGE` are missing at this point?
+    b. (12 points)  Draw a histogram of age,  facet by sex (`SEX`). Make sure that the two histograms are arranged on top of each other. Get rid of all warnings. Comment on the plot.
+
+```{r}
+# Your code goes here
+```
+
+3. (20 points) The variable `DEGREE` shows the respondent's highest educational degree.
+Give a frequency breakdown of `DEGREE`. Bring the levels into an order reflecting the amount of schooling (i.e `LT HIGH SCHOOL`, `HIGH SCHOOL`, `JUNIOR COLLEGE`, `BACHELOR`, `GRADUATE`). Change `DK` to NA. 
+Draw an appropriate chart to show the relationship between `AGE` and `DEGREE`. Comment on the result. 
+
+```{r}
+# Your code goes here
+```
+
+4. The variable `AGEKDBRN` is the respondents' age at the time their first kid was born. 
+
+    a. (12 points) Calculate the average and standard deviation of `AGEKDBRN` for men and women. Comment on it. 
+    b. (22 points) Calculate the average of `AGEKDBRN` over time (`YEAR`), genders (`SEX`) and education (`DEGREE`). Make sure to keep track of how many values each average is based on. Plot the relationship for averages that are based on at least 30 records. Summarise the results in at least three sentences.
+
+```{r}
+# Your code goes here
+```
+

@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1540847391091.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "DAFC5C83",
+    "lastKnownWriteTime" : 1540849283,
+    "last_content_update" : 1540849283939,
+    "path" : "~/Documents/Teaching/stat 579/stat 579 - Fall 2018/midterm/midterm-579-section-B/midterm-section-B.Rmd",
+    "project_path" : "midterm-section-B.Rmd",
+    "properties" : {
+        "cursorPosition" : "56,19",
+        "scrollLine" : "47"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
