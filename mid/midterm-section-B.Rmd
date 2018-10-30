@@ -44,8 +44,9 @@ gss %>% count(YEAR) %>% filter(n==max(n))
 #plot by year
 ggplot(data=gss %>% count(YEAR), aes(x=YEAR,y=n))+geom_bar(stat="identity",aes(fill=YEAR))
 
-
 ```
+
+Overall we see the number of interviews has increased over the years. The most number of interviews were done in 2006, with 4510 interviews. There is local variations in the counts though.
 
 2. The variable `AGE` captures respondents' age at the time of the interview. The variable is a factor. The levels generally represent the age, but levels `"89 OR OLDER"`, `"DK"`, `"IAP"`, and `"NA"` need to be re-coded before we can use age as a numeric variable. 
 
@@ -106,8 +107,8 @@ From the plot we see that each degree has different distribution over age. There
 gss1 %>% group_by(SEX) %>% filter(!is.na(AGEKDBRN)) %>% summarize(avg=mean(AGEKDBRN),sd=sd(AGEKDBRN),obs=n())
 
 avgs <- gss1 %>% group_by(YEAR,SEX,DEGREE) %>% filter(!is.na(AGEKDBRN)) %>% summarize(avg=mean(AGEKDBRN),sd=sd(AGEKDBRN),obs=n()) %>% filter(obs>=30)
-ggplot(data=avgs, aes(x=avg))+geom_bar() + facet_wrap(~SEX)
-ggplot(data=avgs, aes(x=avg))+geom_bar() + facet_wrap(SEX~DEGREE)
+ggplot(data=avgs, aes(x=avg))+geom_histogram(bins=15) + facet_wrap(~SEX)
+ggplot(data=avgs, aes(x=avg))+geom_histogram(bins=15) + facet_wrap(SEX~DEGREE)
 
 ```
 
