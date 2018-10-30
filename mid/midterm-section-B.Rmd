@@ -36,7 +36,7 @@ gss <- readRDS("gss.rds")
 #num rows
 dim(gss)[1]
 #num inter by years
-gss %>% count(YEAR)
+gss %>% count(YEAR)%>% print(n = Inf)
 #num vars
 dim(gss)[2]
 #most interviews
@@ -64,10 +64,13 @@ gss1 <-  gss1 %>% mutate(AGE_num = replace(AGE_num, AGE_num=="NA", NA))
 #num missing
 sum(is.na(gss1$AGE_num))
 
-ggplot(data=gss1,aes(x=AGE_num))+geom_histogram(stat="count")+facet_wrap(~SEX,ncol = 1)+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplot(data=gss1,aes(x=AGE_num))+geom_bar(stat="count")+facet_wrap(~SEX,ncol = 1)+theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 
 ```
+
+From the plot we see the overall distribution of age is similar for both male and female. This distribution is right skewed. At the end we see number of people above 89 are grouped in one observation. Hence we observe a bigger bar at the right tail for both sexes.
+
 
 3. (20 points) The variable `DEGREE` shows the respondent's highest educational degree.
 Give a frequency breakdown of `DEGREE`. Bring the levels into an order reflecting the amount of schooling (i.e `LT HIGH SCHOOL`, `HIGH SCHOOL`, `JUNIOR COLLEGE`, `BACHELOR`, `GRADUATE`). Change `DK` to NA. 
@@ -85,10 +88,11 @@ levels(gss1$DEGREE)[which(levels(gss1$DEGREE)=='IAP')]=NA
 levels(gss1$DEGREE)<-c('LT HIGH SCHOOL', 'HIGH SCHOOL', 'JUNIOR COLLEGE', 'BACHELOR', 'GRADUATE', "NA")
 gss1 <-  gss1 %>% mutate(DEGREE = replace(DEGREE, DEGREE=="NA", NA))
 
-ggplot(data=gss1%>%filter(!is.na(DEGREE)),aes(x=AGE_num))+geom_histogram(stat="count")+facet_wrap(~DEGREE,ncol = 1)+theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
+ggplot(data=gss1%>%filter(!is.na(DEGREE)),aes(x=AGE_num))+geom_bar(stat="count")+facet_wrap(~DEGREE,ncol = 1)+theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ```
+
+From the plot we see that each degree has different distribution over age. There are no school under age 20 but there are graduates under 20 which is surprising or probably problem with the data.
 
 4. The variable `AGEKDBRN` is the respondents' age at the time their first kid was born. 
 
@@ -102,8 +106,9 @@ ggplot(data=gss1%>%filter(!is.na(DEGREE)),aes(x=AGE_num))+geom_histogram(stat="c
 gss1 %>% group_by(SEX) %>% filter(!is.na(AGEKDBRN)) %>% summarize(avg=mean(AGEKDBRN),sd=sd(AGEKDBRN),obs=n())
 
 avgs <- gss1 %>% group_by(YEAR,SEX,DEGREE) %>% filter(!is.na(AGEKDBRN)) %>% summarize(avg=mean(AGEKDBRN),sd=sd(AGEKDBRN),obs=n()) %>% filter(obs>=30)
-
-ggplot(data=avgs, aes(x=avg))+geom_histogram() + facet_wrap(SEX~DEGREE)
+ggplot(data=avgs, aes(x=avg))+geom_bar() + facet_wrap(~SEX)
+ggplot(data=avgs, aes(x=avg))+geom_bar() + facet_wrap(SEX~DEGREE)
 
 ```
 
+The plot looks different for different conbinations of variables. The min avg is small for female compared to men. Male with high school have high average vs male with graduate or bachelor. Female with bachelor or graduate has less avg the female with high school degree.

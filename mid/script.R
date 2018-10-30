@@ -6,7 +6,7 @@ gss <- readRDS("gss.rds")
 #num rows
 dim(gss)[1]
 #num inter by years
-gss %>% count(YEAR)
+gss %>% count(YEAR)%>% print(n = Inf)
 #num vars
 dim(gss)[2]
 #most interviews
