@@ -56,17 +56,50 @@ levels(starwars_yes$`Age Response`)
 
 5. Variables 10 through 15 answer the question: "Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film." for each of the films. 
 
+
+
 Bring the data set into a long form. Introduce a variable for the star wars episode and the corresponding ranking. 
 Find the average rank for each of the films. Are average ranks different between mens' and womens' rankings?
 On how many responses are the averages based? Show these numbers together with the averages.
 
+```{r}
+starwars_yes[, 10:15]<-sapply(starwars_yes[, 10:15], as.numeric)
+
+xY<-starwars_yes %>% gather(Ep,Rating,colnames(starwars_yes)[10:15])
+
+xY<-xY[which(!is.na(xY$Rating)),] %>% group_by(Ep) %>% mutate(m=mean(Rating))
+
+#MEAN BY MALE AND FEMALE  
+meanRatings<-xY[which(!is.na(xY$Rating)),] %>% group_by(Ep,`Gender Response`) %>% summarise_at(vars("Rating"), funs(mean, length))
+
+ggplot(data=meanRatings,aes(x=`Gender Response`)) + geom_boxplot(aes(y=mean))
+```
 
 
 6. R2 D2 or C-3P0? Which of these two characters is the more popular one? Use responses to variables 25 and 26 to answer this question. Note: first you need to define what you mean by  "popularity" based on the available data.  
 
+```{r}
+popularity<-starwars_yes[,25:26] %>% gather(Character,pop,colnames(starwars_yes)[25:26])
+#remove NA Unfamiliar (N/A)
+popularity<-popularity %>% filter(!is.na(pop))%>% filter(!(pop == "Unfamiliar (N/A)"))
+#map popularity to scale -2 -1 0 1 2
+# very unfavorably Somewhat unfavorably neutral Somewhat favorably Very favorably
+unique(popularity$pop)
+
+popularity <- popularity %>% mutate(popInt = case_when(pop=='Very unfavorably' ~-2, pop=='very unfavorably' ~-2, pop=='Somewhat unfavorably' ~-1, pop=='Neither favorably nor unfavorably (neutral)' ~0, pop=='Somewhat favorably' ~1, pop=='Very favorably' ~2))
+
+popularity %>% group_by(Character) %>% summarise_at(vars(popInt),mean) %>% arrange(desc(popInt))
+
+```
+
+
 
 
 7. Popularity contest: which of the surveyed characters is the most popular? use the popularity measure you defined in the previous question to evaluate responses for characters 16 through 29. Use an appropriate long form of the data to get to your answer. Visualize the result. 
+
+```{r}
+
+```
 
 
 Due date: please refer to the website and Canvas for the due date. 
