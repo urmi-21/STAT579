@@ -16,8 +16,7 @@ Make sure to replace "Your Name" in the YAML with your name.
 2. We are back to a survey collected by FiveThirtyEight. This time we are interested in a survey on Star Wars - the accompanying article is published [here](https://fivethirtyeight.com/features/americas-favorite-star-wars-movies-and-least-favorite-characters/)
 
 ```{r, message=FALSE, warning=FALSE}
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 library(readr) 
 starwars <- read_csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/star-wars-survey/StarWars.csv")
 
@@ -98,10 +97,22 @@ popularity %>% group_by(Character) %>% summarise_at(vars(popInt),mean) %>% arran
 7. Popularity contest: which of the surveyed characters is the most popular? use the popularity measure you defined in the previous question to evaluate responses for characters 16 through 29. Use an appropriate long form of the data to get to your answer. Visualize the result. 
 
 ```{r}
+popularity<-starwars_yes[,16:29] %>% gather(Character,pop,colnames(starwars_yes)[16:29])
+#remove NA Unfamiliar (N/A)
+popularity<-popularity %>% filter(!is.na(pop))%>% filter(!(pop == "Unfamiliar (N/A)"))
+#map popularity to scale -2 -1 0 1 2
+# very unfavorably Somewhat unfavorably neutral Somewhat favorably Very favorably
+unique(popularity$pop)
+
+popularity <- popularity %>% mutate(popInt = case_when(pop=='Very unfavorably' ~-2, pop=='very unfavorably' ~-2, pop=='Somewhat unfavorably' ~-1, pop=='Neither favorably nor unfavorably (neutral)' ~0, pop=='Somewhat favorably' ~1, pop=='Very favorably' ~2))
+
+meanpopularityAllchars <- popularity %>% group_by(Character) %>% summarise_at(vars(popInt),mean) %>% arrange(desc(popInt))
+#rename
+meanpopularityAllchars[1,1]<- "Han Solo"
+
+
+ggplot(data=meanpopularityAllchars,aes(x=`Character`,y=popInt,fill=(Character))) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ```
 
 
-Due date: please refer to the website and Canvas for the due date. 
-
-For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 
