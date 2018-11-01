@@ -45,6 +45,13 @@ dim(starwars_yes)[1]
 
 4. Variables `Gender Response` and `Age Response` are two of the demographic variables collected. Use `dplyr` to provide a frequency break down for each variable. Does the result surprise you? Comment. Reorder the levels in the variable `Age Response` from youngest to oldest.
 
+```{r}
+starwars_yes %>% count(`Gender Response`)
+starwars_yes %>% count(`Age Response`)
+#make factor and arrange levels
+starwars_yes$`Age Response`<-factor(starwars_yes$`Age Response`, levels=c("18-29", "30-44", "45-60", "> 60", ""))
+levels(starwars_yes$`Age Response`)
+```
 
 
 5. Variables 10 through 15 answer the question: "Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film." for each of the films. 

@@ -381,8 +381,30 @@ dim(starwars)[1]</code></pre>
 dim(starwars_yes)[1]</code></pre>
 <pre><code>## [1] 936</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li><p>Variables <code>Gender Response</code> and <code>Age Response</code> are two of the demographic variables collected. Use <code>dplyr</code> to provide a frequency break down for each variable. Does the result surprise you? Comment. Reorder the levels in the variable <code>Age Response</code> from youngest to oldest.</p></li>
-<li><p>Variables 10 through 15 answer the question: “Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film.” for each of the films.</p></li>
+<li>Variables <code>Gender Response</code> and <code>Age Response</code> are two of the demographic variables collected. Use <code>dplyr</code> to provide a frequency break down for each variable. Does the result surprise you? Comment. Reorder the levels in the variable <code>Age Response</code> from youngest to oldest.</li>
+</ol>
+<pre class="r"><code>starwars_yes %&gt;% count(`Gender Response`)</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   `Gender Response`     n
+##   &lt;chr&gt;             &lt;int&gt;
+## 1 Female              397
+## 2 Male                423
+## 3 &lt;NA&gt;                116</code></pre>
+<pre class="r"><code>starwars_yes %&gt;% count(`Age Response`)</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##   `Age Response`     n
+##   &lt;chr&gt;          &lt;int&gt;
+## 1 &gt; 60             193
+## 2 18-29            180
+## 3 30-44            207
+## 4 45-60            240
+## 5 &lt;NA&gt;             116</code></pre>
+<pre class="r"><code>#make factor and arrange levels
+starwars_yes$`Age Response`&lt;-factor(starwars_yes$`Age Response`, levels=c(&quot;18-29&quot;, &quot;30-44&quot;, &quot;45-60&quot;, &quot;&gt; 60&quot;, &quot;&quot;))
+levels(starwars_yes$`Age Response`)</code></pre>
+<pre><code>## [1] &quot;18-29&quot; &quot;30-44&quot; &quot;45-60&quot; &quot;&gt; 60&quot;  &quot;&quot;</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Variables 10 through 15 answer the question: “Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film.” for each of the films.</li>
 </ol>
 <p>Bring the data set into a long form. Introduce a variable for the star wars episode and the corresponding ranking. Find the average rank for each of the films. Are average ranks different between mens’ and womens’ rankings? On how many responses are the averages based? Show these numbers together with the averages.</p>
 <ol start="6" style="list-style-type: decimal">
