@@ -68,9 +68,10 @@ popularity <- popularity %>% mutate(popInt = case_when(pop=='Very unfavorably' ~
 meanpopularityAllchars <- popularity %>% group_by(Character) %>% summarise_at(vars(popInt),mean) %>% arrange(desc(popInt))
 #rename
 meanpopularityAllchars[1,1]<- "Han Solo"
-
+#make factor to avoid reorder
+meanpopularityAllchars$Character <- factor(meanpopularityAllchars$Character, levels = meanpopularityAllchars$Character)
 
 ggplot(data=meanpopularityAllchars,aes(x=`Character`,y=popInt,fill=(Character))) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 
-
+meanpopularityAllchars$Character

@@ -95,7 +95,7 @@ popularity %>% group_by(Character) %>% summarise_at(vars(popInt),mean) %>% arran
 
 ```
 
-I mapped the popularity to a popularity score on a scale of -2 to +2, where -2 is Very unfavorably, -1 is Somewhat unfavorably, 0 is neutral, +1 is Somewhat favorably and +2 is Very favorably. Overall popularity of a character is then the mean of all the scores by the respondents. R2-D2 is more popular than  C-3P0.
+I define popularity to be how favorable a character is. I mapped the popularity to a popularity score on a scale of -2 to +2, where -2 is Very unfavorably, -1 is Somewhat unfavorably, 0 is neutral, +1 is Somewhat favorably and +2 is Very favorably. Overall popularity of a character is then the mean of all the scores by the respondents. R2-D2 is more popular than  C-3P0.
 
 
 
@@ -115,10 +115,13 @@ popularity <- popularity %>% mutate(popInt = case_when(pop=='Very unfavorably' ~
 meanpopularityAllchars <- popularity %>% group_by(Character) %>% summarise_at(vars(popInt),mean) %>% arrange(desc(popInt))
 #rename
 meanpopularityAllchars[1,1]<- "Han Solo"
-
+#make factor to avoid reorder
+meanpopularityAllchars$Character <- factor(meanpopularityAllchars$Character, levels = meanpopularityAllchars$Character)
 
 ggplot(data=meanpopularityAllchars,aes(x=`Character`,y=popInt,fill=(Character))) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ```
+
+The most popular character is Han Solo and least popular is Jar Jar Binks
 
 
