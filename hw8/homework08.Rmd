@@ -72,9 +72,12 @@ xY<-xY[which(!is.na(xY$Rating)),] %>% group_by(Ep) %>% mutate(m=mean(Rating))
 #MEAN BY MALE AND FEMALE  
 meanRatings<-xY[which(!is.na(xY$Rating)),] %>% group_by(Ep,`Gender Response`) %>% summarise_at(vars("Rating"), funs(mean, length))
 
+meanRatings
+
 ggplot(data=meanRatings,aes(x=`Gender Response`)) + geom_boxplot(aes(y=mean))
 ```
 
+For some of the movies male mean is higher than female. For others the trend is opposite. Overall, there is more spread in mean values among  the male group.
 
 6. R2 D2 or C-3P0? Which of these two characters is the more popular one? Use responses to variables 25 and 26 to answer this question. Note: first you need to define what you mean by  "popularity" based on the available data.  
 
