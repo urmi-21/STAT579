@@ -52,6 +52,7 @@ starwars_yes$`Age Response`<-factor(starwars_yes$`Age Response`, levels=c("18-29
 levels(starwars_yes$`Age Response`)
 ```
 
+The surprising thing is that majority of people (240) who watched starwars are in age group 45-60 whereas, only 180 people aged 18-29 watched the movie.
 
 5. Variables 10 through 15 answer the question: "Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film." for each of the films. 
 
