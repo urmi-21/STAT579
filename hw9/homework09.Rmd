@@ -24,14 +24,28 @@ Focus on table 2: what problems do you see with the file format? List three prob
 The file has a total of 19 sheets. Table 2 contains human development index trends from 1990 till 2017. Problems with the data
 
  * There are missing values in the data
- * 
+ * The data format is not consistent i.e. values under a column are interrupted by names or non numbers and there are blank columns in the dataset.
+ * The data collected at different intervals. data from 1991 till 1999 is not availalable also data for 2001 till 2009 is not available.
 
 3. There is an R package available online (on CRAN) that allows to read Excel files. Find the package, (install it if necessary), load it  and try to read the second table of the file "2018_statistical_annex_all.xlsx" into R (make use of the available parameters). Compare the result in R with what is visible in Excel. Keep track of and comment on all steps in the process. 
 For the write-up assume, that the Excel file is in the same folder as the homework Rmd file. Also assume, that both the TA and I have an updated version of the package installed, i.e. only load the package but do not install it in the code.
 
 We can use readxl package to read xlsx files. 
 
+```{r}
+library(readxl)
+X2018_statistical_annex_all <- read_excel("2018_statistical_annex_all.xlsx", 
+    sheet = "Table 2")
+#View(X2018_statistical_annex_all)
+```
+
 4. Introduce names to the data extracted for Table 2.
+
+```{r}
+
+names(X2018_statistical_annex_all)<-c("HDI Rank","Country","HDIValue1990","", "HDIValue2000","","HDIValue2010","","HDIValue2012","","HDIValue2014","","HDIValue2015","","HDIValue2016","","HDIValue2017","","ChangeinHDI2012-2017","","AvgAnualHDIgrowth1990-2000","","AvgAnualHDIgrowth2000-2010","","AvgAnualHDIgrowth2010-2017","","AvgAnualHDIgrowth1990-2017")
+```
+
 5. Use `tidyr` and `dplyr` functionality to get the data set into the following format (Classification of HDI is very high for [0.8,1], high for [0.7, .8), medium for [.55, .7) and low below .55):
 
 ```
@@ -44,6 +58,12 @@ We can use readxl package to read xlsx files.
 5 Germany     1990  0.801 very high     
 6 Iceland     1990  0.802 very high   
 ```
+
+```{r}
+
+
+```
+
 
 6. Use `ggplot` to draw a plot of HDI over time for the US, Norway, Germany, and Canada. 
 
