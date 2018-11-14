@@ -402,7 +402,19 @@ data$year&lt;-as.character(data$year)
 data$HDI&lt;-as.double(data$HDI)</code></pre>
 <pre><code>## Warning: NAs introduced by coercion</code></pre>
 <pre class="r"><code>data$Classification&lt;-as.factor(data$Classification)
-data$Classification = factor(data$Classification,levels(data$Classification)[c(2,3,1,4)],ordered=TRUE)</code></pre>
+data$Classification = factor(data$Classification,levels(data$Classification)[c(2,3,1,4)],ordered=TRUE)
+
+
+head(data)</code></pre>
+<pre><code>## # A tibble: 6 x 4
+##   Country     year    HDI Classification
+##   &lt;chr&gt;       &lt;chr&gt; &lt;dbl&gt; &lt;ord&gt;         
+## 1 Norway      1990  0.850 very high     
+## 2 Switzerland 1990  0.832 very high     
+## 3 Australia   1990  0.866 very high     
+## 4 Ireland     1990  0.763 high          
+## 5 Germany     1990  0.801 very high     
+## 6 Iceland     1990  0.802 very high</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>Use <code>ggplot</code> to draw a plot of HDI over time for the US, Norway, Germany, and Canada.</li>
 </ol>

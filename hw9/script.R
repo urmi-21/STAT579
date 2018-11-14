@@ -48,13 +48,16 @@ data<-data%>%gather(key = year, value = HDI,3:10) %>% select(Country,year,HDI) %
 data$year<-as.character(data$year)
 data$HDI<-as.double(data$HDI)
 data$Classification<-as.factor(data$Classification)
-data$Classification = factor(data$Classification,levels(data$Classification)[c(2,3,1,4)])
+data$Classification = factor(data$Classification,levels(data$Classification)[c(2,3,1,4)],ordered=TRUE)
 
 #6
 ggplot(data=data%>%filter(Country %in% c("United States","Norway","Germany","Canada")),aes(x=year,y=HDI,color=Country,group = 1))+geom_point()+ geom_line()+facet_wrap(~Country)+theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 #7
-data%>%group_by(Country,Classification,year)%>%filter(year==2000 | year==2017)%>% count %>% group_by(Classification) %>% count
+data%>%group_by(Country,Classification,year)%>%filter(year==2000 | year==2017)%>% count %>% spread(key = year, value = Classification) %>% 
+      mutate(change= ifelse(`2000`==`2017`,"no",ifelse(`2000`>=`2017`,"neg","pos")))%>%group_by(change) %>% count()
+
+
 
 
 
