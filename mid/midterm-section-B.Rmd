@@ -1,7 +1,7 @@
 ---
-title: "Midterm - Stat 579 - Fall 2018 - Section B"
+title: "HW10 Midterm - Stat 579 - Fall 2018 - Section B"
 author: "Urminder Singh"
-date: "10/30/2018"
+date: "11/27/2018"
 output: html_document
 ---
 
@@ -42,7 +42,7 @@ dim(gss)[2]
 #most interviews
 gss %>% count(YEAR) %>% filter(n==max(n))
 #plot by year
-ggplot(data=gss %>% count(YEAR), aes(x=YEAR,y=n))+geom_bar(stat="identity",aes(fill=YEAR))
+ggplot(data=gss %>% count(YEAR), aes(x=YEAR,y=n))+geom_bar(stat="identity",aes(fill=factor(YEAR)))
 
 ```
 
@@ -79,17 +79,21 @@ Draw an appropriate chart to show the relationship between `AGE` and `DEGREE`. C
 
 ```{r}
 # Your code goes here
-
 #freq of degree
 gss1 %>% count(DEGREE)
 #remove DK, IAP
 levels(gss1$DEGREE)[which(levels(gss1$DEGREE)=='DK')]=NA
 levels(gss1$DEGREE)[which(levels(gss1$DEGREE)=='IAP')]=NA
 
-levels(gss1$DEGREE)<-c('LT HIGH SCHOOL', 'HIGH SCHOOL', 'JUNIOR COLLEGE', 'BACHELOR', 'GRADUATE', "NA")
+#reorder levels
+gss1$DEGREE <- factor(gss1$DEGREE,levels(gss1$DEGREE)[c(5,3,4,1,2,6)])
+
 gss1 <-  gss1 %>% mutate(DEGREE = replace(DEGREE, DEGREE=="NA", NA))
 
+ggplot(data=gss1%>%filter(!is.na(DEGREE)),aes(x=AGE_num))+geom_histogram(stat="count")+facet_wrap(~DEGREE,ncol = 1)+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
 ggplot(data=gss1%>%filter(!is.na(DEGREE)),aes(x=AGE_num))+geom_bar(stat="count")+facet_wrap(~DEGREE,ncol = 1)+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
 
 ```
 
@@ -103,13 +107,20 @@ From the plot we see that each degree has different distribution over age. There
 
 ```{r}
 # Your code goes here
-
+#part a
 gss1 %>% group_by(SEX) %>% filter(!is.na(AGEKDBRN)) %>% summarize(avg=mean(AGEKDBRN),sd=sd(AGEKDBRN),obs=n())
 
+#part b
 avgs <- gss1 %>% group_by(YEAR,SEX,DEGREE) %>% filter(!is.na(AGEKDBRN)) %>% summarize(avg=mean(AGEKDBRN),sd=sd(AGEKDBRN),obs=n()) %>% filter(obs>=30)
+head(avgs)
+
 ggplot(data=avgs, aes(x=avg))+geom_histogram(bins=15) + facet_wrap(~SEX)
 ggplot(data=avgs, aes(x=avg))+geom_histogram(bins=15) + facet_wrap(SEX~DEGREE)
 
+ggplot(data=avgs, aes(x=avg))+geom_histogram(bins=15,aes(fill=factor(DEGREE ))) + facet_wrap(SEX~YEAR)
+
+
 ```
 
-The plot looks different for different conbinations of variables. The min avg is small for female compared to men. Male with high school have high average vs male with graduate or bachelor. Female with bachelor or graduate has less avg the female with high school degree.
+The plot looks different for different conbinations of variables. The min avg is small for female compared to men. Male with high school have high average vs male with graduate or bachelor. Female with bachelor or graduate has less avg the female with high school degree. The last plot shows the average overs the years for both gender categories while grouping by Degree.
+
