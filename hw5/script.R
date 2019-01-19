@@ -9,6 +9,7 @@ fly$Education <- factor(fly$Education, levels = c("Less than high school degree"
 
 #2
 
+#new comment
 
 ggplot(data=fly, aes(x=How.often.do.you.travel.by.plane.)) +  geom_bar(stat = "count")+ theme(axis.text.x = element_text(angle = 90, hjust = 1))
 #reorder data
